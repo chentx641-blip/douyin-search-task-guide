@@ -15,6 +15,7 @@
       --bg: #f5f8ff;
       --card: #fff;
       --yellow: #fff7df;
+      --green: #149447;
       --shadow: 0 10px 26px rgba(15, 54, 120, .10);
     }
 
@@ -146,11 +147,17 @@
       background: var(--yellow);
       font-weight: 750;
     }
-    .steps, .bullets {
+    .steps, .bullets, .mini-points {
       margin: 0;
       padding-left: 22px;
     }
-    .steps li, .bullets li { margin: 6px 0; }
+    .steps li, .bullets li, .mini-points li { margin: 6px 0; }
+    .mini-points {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+      margin-top: 10px;
+    }
 
     .grid {
       display: grid;
@@ -164,15 +171,18 @@
     }
     .mini strong, .prompt-card strong { display: block; margin-bottom: 4px; }
     .mini p, .prompt-card p { margin: 0; color: var(--muted); }
-
     .prompt-grid {
       display: grid;
       gap: 10px;
       margin-top: 10px;
     }
 
-    .image-card {
+    .image-grid {
+      display: grid;
+      gap: 12px;
       margin-top: 13px;
+    }
+    .image-card {
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -233,40 +243,40 @@
       font-weight: 900;
     }
 
-    .checklist {
-      display: grid;
-      gap: 9px;
-      margin-top: 10px;
-    }
-    .check-item {
+    .step-check {
       display: flex;
       align-items: flex-start;
       gap: 10px;
+      margin-top: 14px;
       padding: 11px 12px;
-      border: 1px solid var(--line);
+      border: 1px solid #b9cdf7;
       border-radius: 12px;
-      background: #fff;
+      background: #f7fbff;
+      color: var(--blue-dark);
+      font-weight: 900;
       cursor: pointer;
+      user-select: none;
     }
-    .check-item input {
+    .step-check input {
       flex: 0 0 auto;
       width: 20px;
       height: 20px;
       margin-top: 3px;
       accent-color: var(--blue);
     }
-    .ready {
+    .completion-panel {
       display: none;
-      margin-top: 13px;
-      padding: 13px;
+      margin-bottom: 14px;
+      padding: 16px;
       border: 1px solid #98e0b1;
-      border-radius: 14px;
+      border-radius: 16px;
       background: #eafaf0;
       color: #075e2a;
       text-align: center;
       font-weight: 900;
+      box-shadow: var(--shadow);
     }
-    .ready.show { display: block; }
+    .completion-panel.show { display: block; }
 
     .back-top {
       position: fixed;
@@ -325,12 +335,13 @@
       .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .prompt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+      .image-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .content, .card-head { padding-inline: 20px; }
       .card-head { padding-top: 20px; }
     }
 
     @media (max-width: 620px) {
-      .grid.four, .compare { grid-template-columns: 1fr; }
+      .grid.four, .compare, .mini-points { grid-template-columns: 1fr; }
       h2 { font-size: 20px; }
       .image-card img { max-height: 450px; }
     }
@@ -340,13 +351,13 @@
   <header class="hero">
     <div class="wrap">
       <h1>抖音搜索任务操作指南</h1>
-      <p>按指定搜索词完成口述、浏览、整体评价与前8条逐条评价</p>
+      <p>按指定搜索词完成口述、浏览、整体评价与逐条内容评价</p>
       <div class="top-alert">开始前：开启手机录屏、系统声音和麦克风，并先口述搜索目的。</div>
       <div class="hero-flow">
         <span>录屏准备</span>
-        <span>→ 开始前口述</span>
+        <span>→ 口述并输入搜索词</span>
         <span>→ 指定搜索</span>
-        <span>→ 自由浏览</span>
+        <span>→ 自由浏览并口述</span>
         <span>→ 第4题整体评价</span>
         <span>→ 前8条逐条评价</span>
       </div>
@@ -357,18 +368,19 @@
     <div class="wrap">
       <a href="#goal">任务目标</a>
       <a href="#record">录屏准备</a>
-      <a href="#opening">开始前口述</a>
+      <a href="#opening">口述搜索词</a>
       <a href="#search">指定搜索</a>
       <a href="#browse">自由浏览</a>
       <a href="#overall">整体评价</a>
-      <a href="#eight">前8条评价</a>
+      <a href="#eight">逐条评价</a>
       <a href="#overview">流程总览</a>
-      <a href="#checklist">检查清单</a>
     </div>
   </nav>
 
   <main>
     <div class="wrap">
+      <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
+
       <section id="goal" class="card">
         <div class="card-head">
           <span class="badge">目标</span>
@@ -377,12 +389,12 @@
         <div class="content">
           <p class="lead">使用任务说明中的<span class="red">指定搜索词</span>，在抖音<span class="red">综合页</span>完成一次搜索体验评价。</p>
           <ol class="steps">
-            <li>先说明自己为什么要搜，再输入指定搜索词。</li>
-            <li>自由浏览感兴趣内容，建议4个以内，并口述真实感受。</li>
+            <li>先口述自己想搜什么、为什么搜、希望解决什么问题，并在问卷中输入搜索词。</li>
+            <li>进入抖音搜索，在综合页自由浏览感兴趣内容，并边看边口述。</li>
             <li>自由浏览结束后，填写<span class="red">问卷第4题：整体搜索结果评价</span>。</li>
-            <li>回到搜索结果顶部，从第1条到第8条按顺序逐条评价。</li>
+            <li>回到搜索结果顶部，从第1条到第8条按顺序逐条点开、口述并评价。</li>
           </ol>
-          <div class="tip">核心顺序：开始前口述 → 自由浏览 → 第4题整体评价 → 前8条逐条评价。</div>
+          <div class="tip">核心顺序：口述并输入搜索词 → 自由浏览并口述 → 第4题整体评价 → 前8条逐条评价。</div>
         </div>
       </section>
 
@@ -399,22 +411,32 @@
             <div class="mini"><strong>确认账号</strong><p>使用报名时提供的抖音账号。</p></div>
           </div>
           <div class="tip">录屏不要中断，必须录到系统声音和自己的声音。</div>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第1步：录屏、系统声音、麦克风和账号确认</label>
         </div>
       </section>
 
       <section id="opening" class="card">
         <div class="card-head">
           <span class="badge">2</span>
-          <h2>第二步｜开始前先口述搜索目的</h2>
+          <h2>第二步｜口述搜索目的，并输入搜索词</h2>
         </div>
-        <div class="content">
-          <p class="lead">录屏准备完成后，先对着手机说清楚：<span class="red">这次想搜什么、为什么想搜、希望解决什么问题</span>。</p>
-          <div class="prompt-grid">
-            <div class="prompt-card"><strong>想搜什么</strong><p>例如：我这次想搜某个产品、问题、做法或对比。</p></div>
-            <div class="prompt-card"><strong>为什么想搜</strong><p>例如：我最近遇到了什么情况，为什么需要了解它。</p></div>
-            <div class="prompt-card"><strong>希望搜到什么</strong><p>例如：想看到测评、真实经验、解决办法或避坑信息。</p></div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">录屏准备完成后，先口述搜索目的，再把<span class="red">指定搜索词</span>填入问卷第3题。</p>
+            <div class="prompt-grid">
+              <div class="prompt-card"><strong>想搜什么</strong><p>这次准备搜索什么内容或问题。</p></div>
+              <div class="prompt-card"><strong>为什么想搜</strong><p>最近遇到什么情况，为什么需要了解。</p></div>
+              <div class="prompt-card"><strong>希望搜到什么</strong><p>想看到测评、经验、解决办法或避坑信息。</p></div>
+            </div>
+            <div class="soft">这一步除了口述，也要在问卷中输入搜索词，然后点击下一页。</div>
           </div>
-          <div class="soft">口述不用很长，30秒左右即可。说自己的真实需求，不要照读示例。</div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/question-search-term.jpg" aria-label="放大查看问卷第3题截图">
+              <img src="assets/question-search-term.jpg" alt="问卷第3题：输入本次搜索词" />
+            </button>
+            <figcaption class="caption">问卷第3题：口述搜索目的后，把搜索词复制到输入框。</figcaption>
+          </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第2步：口述搜索目的，并填写问卷第3题搜索词</label>
         </div>
       </section>
 
@@ -439,6 +461,7 @@
             </button>
             <figcaption class="caption">示例：搜索后应停留在“综合”页。</figcaption>
           </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第3步：用指定搜索词搜索，并停留在综合页</label>
         </div>
       </section>
 
@@ -448,17 +471,32 @@
           <h2>第四步｜自由浏览并口述</h2>
         </div>
         <div class="content">
-          <p class="lead">在综合页里，按自己的兴趣选择想看的内容，<span class="red">建议4个以内</span>。</p>
+          <p class="lead">看到问卷提示后，就可以回到抖音综合页，按自己的兴趣选择想看的内容，<span class="red">建议4个以内</span>。</p>
           <ul class="bullets">
             <li>自由选择，不需要按顺序。</li>
             <li>点开后边看边说真实想法。</li>
             <li>这一步只浏览和口述，不填写逐条评价。</li>
           </ul>
           <div class="prompt-grid">
-            <div class="prompt-card"><strong>为什么点开</strong><p>标题、封面、作者或内容看起来是否吸引你。</p></div>
-            <div class="prompt-card"><strong>是否有帮助</strong><p>内容是否回答了你的问题，有没有新的信息。</p></div>
-            <div class="prompt-card"><strong>整体感受</strong><p>是否真实、清楚、像广告、无关或重复。</p></div>
+            <div class="prompt-card"><strong>为什么点开</strong><p>标题、封面、作者或内容哪里吸引你。</p></div>
+            <div class="prompt-card"><strong>是否满足需求</strong><p>有没有回答你的问题，哪些内容比较好。</p></div>
+            <div class="prompt-card"><strong>哪里不够好</strong><p>是否不相关、重复、广告感强或信息不清楚。</p></div>
           </div>
+          <div class="image-grid two">
+            <figure class="image-card">
+              <button type="button" data-img="assets/browse-start-question.jpg" aria-label="放大查看自由浏览开始提示">
+                <img src="assets/browse-start-question.jpg" alt="问卷提示：开始自由浏览搜索结果" />
+              </button>
+              <figcaption class="caption">看到这个问卷页面后，回到抖音开始自由浏览。</figcaption>
+            </figure>
+            <figure class="image-card">
+              <button type="button" data-img="assets/browse-video-example.jpg" aria-label="放大查看点开视频示例">
+                <img src="assets/browse-video-example.jpg" alt="自由浏览时点开某个视频并口述评价" />
+              </button>
+              <figcaption class="caption">点开内容后，边看边口述：为什么点开、有没有帮助、哪里好或不好。</figcaption>
+            </figure>
+          </div>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第4步：自由浏览感兴趣内容，并边看边口述</label>
         </div>
       </section>
 
@@ -483,33 +521,46 @@
             </button>
             <figcaption class="caption">问卷第4题：对本次搜索整体做判断。</figcaption>
           </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第5步：填写问卷第4题整体搜索结果评价</label>
         </div>
       </section>
 
       <section id="eight" class="card">
         <div class="card-head">
           <span class="badge">6</span>
-          <h2>第六步｜回到顶部，评价前8条</h2>
+          <h2>第六步｜回到顶部，逐条评价前8条</h2>
         </div>
         <div class="content two-col">
           <div>
-            <p class="lead">完成整体评价后，回到抖音搜索结果页顶部，按综合页顺序评价前8条。</p>
+            <p class="lead">完成整体评价后，回到抖音搜索结果页顶部，按综合页顺序完成前8条。<span class="red">每条都要点开、口述、再填写对应评价</span>。</p>
             <div class="flow">
-              <div class="flow-step">第1条 → 点开 → 填第1条评价</div>
+              <div class="flow-step">第1条 → 点开并口述 → 填第1条评价</div>
               <div class="arrow">↓</div>
-              <div class="flow-step">第2条 → 点开 → 填第2条评价</div>
+              <div class="flow-step">第2条 → 点开并口述 → 填第2条评价</div>
               <div class="arrow">↓</div>
-              <div class="flow-step">一直完成到第8条</div>
+              <div class="flow-step">按顺序一直完成到第8条</div>
             </div>
-            <div class="tip">不要跳过；不要只评价喜欢的内容；自由浏览看过的内容也要按顺序评价。</div>
-            <div class="soft">逐条口述可围绕：这一条是否解决问题、哪里有帮助、哪里不足、是否愿意继续看。</div>
+            <div class="soft">
+              逐条口述可以从这些小点里选着说：
+              <ul class="mini-points">
+                <li>这条和搜索词是否相关</li>
+                <li>标题或封面是否清楚</li>
+                <li>内容有没有解决问题</li>
+                <li>哪里有帮助或有新信息</li>
+                <li>哪里不足或没讲清楚</li>
+                <li>是否像广告或带货</li>
+                <li>是否真实可信</li>
+                <li>是否愿意继续看或收藏</li>
+              </ul>
+            </div>
           </div>
           <figure class="image-card">
             <button type="button" data-img="assets/item-rating.jpg" aria-label="放大查看逐条评价题截图">
               <img src="assets/item-rating.jpg" alt="问卷逐条内容评价题截图" />
             </button>
-            <figcaption class="caption">逐条评价题：每一题对应综合页中的一条搜索结果。</figcaption>
+            <figcaption class="caption">逐条评价题：每一题对应综合页中的一条搜索结果。不要跳过，不要只评价喜欢的内容。</figcaption>
           </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第6步：按顺序完成前8条逐条口述和评价</label>
         </div>
       </section>
 
@@ -522,46 +573,25 @@
           <div class="flow">
             <div class="flow-step">录屏准备</div>
             <div class="arrow">↓</div>
-            <div class="flow-step">口述：想搜什么、为什么搜、希望解决什么问题</div>
+            <div class="flow-step">口述搜索目的，并在问卷第3题输入搜索词</div>
             <div class="arrow">↓</div>
-            <div class="flow-step">输入指定搜索词</div>
+            <div class="flow-step">在抖音输入指定搜索词，停留在综合页</div>
             <div class="arrow">↓</div>
-            <div class="flow-step">停留在综合页</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">自由浏览感兴趣内容，并口述</div>
+            <div class="flow-step">自由浏览感兴趣内容，并口述评价</div>
             <div class="arrow">↓</div>
             <div class="flow-step">填写问卷第4题：整体搜索结果评价</div>
             <div class="arrow">↓</div>
             <div class="flow-step">回到搜索结果页顶部</div>
             <div class="arrow">↓</div>
-            <div class="flow-step">从第1条到第8条逐条评价</div>
+            <div class="flow-step">从第1条到第8条逐条点开、口述并评价</div>
             <div class="arrow">↓</div>
             <div class="flow-step">提交问卷</div>
           </div>
+          <label class="step-check"><input type="checkbox" class="step-done" />我已提交问卷，并确认录屏完整保存</label>
         </div>
       </section>
 
-      <section id="checklist" class="card">
-        <div class="card-head">
-          <span class="badge">✓</span>
-          <h2>开始任务前检查清单</h2>
-        </div>
-        <div class="content">
-          <div class="checklist">
-            <label class="check-item"><input type="checkbox" />我已开启手机录屏、系统声音和麦克风</label>
-            <label class="check-item"><input type="checkbox" />我已打开问卷，并确认登录报名时提供的抖音账号</label>
-            <label class="check-item"><input type="checkbox" />我已确认任务说明中的指定搜索词</label>
-            <label class="check-item"><input type="checkbox" />我知道搜索前要先口述搜索目的</label>
-            <label class="check-item"><input type="checkbox" />我知道搜索后要停留在“综合”页</label>
-            <label class="check-item"><input type="checkbox" />我知道先自由浏览并口述，建议4个以内</label>
-            <label class="check-item"><input type="checkbox" />我知道自由浏览后先完成问卷第4题整体评价</label>
-            <label class="check-item"><input type="checkbox" />我知道最后要回到顶部，按顺序完成前8条逐条评价</label>
-          </div>
-          <div id="readyMessage" class="ready">准备完成，可以开始任务。</div>
-        </div>
-      </section>
-
-      <footer>请按照任务说明中的指定搜索词完成任务</footer>
+      <footer>请按照任务说明中的指定搜索词完成任务。每完成一步，就勾选一次，避免漏做。</footer>
     </div>
   </main>
 
@@ -577,13 +607,13 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    const checklistInputs = Array.from(document.querySelectorAll('.checklist input'));
-    const readyMessage = document.getElementById('readyMessage');
-    checklistInputs.forEach(input => {
-      input.addEventListener('change', () => {
-        readyMessage.classList.toggle('show', checklistInputs.every(item => item.checked));
-      });
-    });
+    const stepInputs = Array.from(document.querySelectorAll('.step-done'));
+    const completionPanel = document.getElementById('completionPanel');
+    function updateCompletion() {
+      const complete = stepInputs.length > 0 && stepInputs.every(input => input.checked);
+      completionPanel.classList.toggle('show', complete);
+    }
+    stepInputs.forEach(input => input.addEventListener('change', updateCompletion));
 
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
