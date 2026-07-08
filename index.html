@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>抖音搜索任务操作指南</title>
+  <style>
+    :root {
+      --blue: #0b5cff;
+      --blue-dark: #073a9b;
+      --red: #e52222;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e5f7;
+      --bg: #f5f8ff;
+      --card: #fff;
+      --yellow: #fff7df;
+      --shadow: 0 10px 26px rgba(15, 54, 120, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.62;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .hero {
+      padding: 24px 16px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, #063db8, #0b66ff 64%, #1aa3ff);
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+    }
+    .wrap { width: min(100%, 980px); margin: 0 auto; }
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(28px, 7vw, 42px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+    .hero p { margin: 0; color: rgba(255,255,255,.92); font-size: 17px; }
+    .top-alert {
+      margin-top: 15px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 14px;
+      background: rgba(255,255,255,.16);
+      font-weight: 900;
+    }
+    .hero-flow, .nav .wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hero-flow { margin-top: 14px; }
+    .hero-flow::-webkit-scrollbar, .nav .wrap::-webkit-scrollbar { display: none; }
+    .hero-flow span {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.16);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245,248,255,.94);
+      backdrop-filter: blur(10px);
+    }
+    .nav a {
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--blue-dark);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    main { padding: 16px 14px 42px; }
+    section { scroll-margin-top: 76px; margin-bottom: 14px; }
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .card-head {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 16px 16px 0;
+    }
+    .badge {
+      min-width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+    }
+    h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.3;
+      color: #091a3f;
+    }
+    .content { padding: 14px 16px 16px; }
+    .lead { margin: 0 0 10px; font-size: 17px; }
+    .red { color: var(--red); font-weight: 900; }
+    .blue { color: var(--blue-dark); font-weight: 900; }
+    .tip {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #ffd1d1;
+      background: #fff3f3;
+      color: #501313;
+      font-weight: 850;
+    }
+    .soft {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #f1d68b;
+      background: var(--yellow);
+      font-weight: 750;
+    }
+    .steps, .bullets {
+      margin: 0;
+      padding-left: 22px;
+    }
+    .steps li, .bullets li { margin: 6px 0; }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+    .mini, .prompt-card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+    .mini strong, .prompt-card strong { display: block; margin-bottom: 4px; }
+    .mini p, .prompt-card p { margin: 0; color: var(--muted); }
+
+    .prompt-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .image-card {
+      margin-top: 13px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .image-card button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+    .image-card img {
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      background: #f7f9fc;
+    }
+    .caption {
+      padding: 9px 11px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 8px;
+    }
+    .flow-step {
+      padding: 12px;
+      border: 1px solid #b9cdf7;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #f2f7ff);
+      text-align: center;
+      font-weight: 900;
+    }
+    .arrow {
+      color: var(--blue);
+      text-align: center;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .compare div {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f7fbff;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .check-item input {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      margin-top: 3px;
+      accent-color: var(--blue);
+    }
+    .ready {
+      display: none;
+      margin-top: 13px;
+      padding: 13px;
+      border: 1px solid #98e0b1;
+      border-radius: 14px;
+      background: #eafaf0;
+      color: #075e2a;
+      text-align: center;
+      font-weight: 900;
+    }
+    .ready.show { display: block; }
+
+    .back-top {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      padding: 10px 13px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 10px 22px rgba(11,92,255,.28);
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(5,16,38,.82);
+    }
+    .lightbox.show { display: flex; }
+    .lightbox img {
+      max-width: min(100%, 960px);
+      max-height: 88vh;
+      border-radius: 12px;
+      background: #fff;
+    }
+    .close {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    footer {
+      padding: 20px 0 8px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (min-width: 760px) {
+      main { padding-inline: 22px; }
+      .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .prompt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+      .content, .card-head { padding-inline: 20px; }
+      .card-head { padding-top: 20px; }
+    }
+
+    @media (max-width: 620px) {
+      .grid.four, .compare { grid-template-columns: 1fr; }
+      h2 { font-size: 20px; }
+      .image-card img { max-height: 450px; }
+    }
+  </style>
+</head>
+<body id="top">
+  <header class="hero">
+    <div class="wrap">
+      <h1>抖音搜索任务操作指南</h1>
+      <p>按指定搜索词完成口述、浏览、整体评价与前8条逐条评价</p>
+      <div class="top-alert">开始前：开启手机录屏、系统声音和麦克风，并先口述搜索目的。</div>
+      <div class="hero-flow">
+        <span>录屏准备</span>
+        <span>→ 开始前口述</span>
+        <span>→ 指定搜索</span>
+        <span>→ 自由浏览</span>
+        <span>→ 第4题整体评价</span>
+        <span>→ 前8条逐条评价</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="页面目录">
+    <div class="wrap">
+      <a href="#goal">任务目标</a>
+      <a href="#record">录屏准备</a>
+      <a href="#opening">开始前口述</a>
+      <a href="#search">指定搜索</a>
+      <a href="#browse">自由浏览</a>
+      <a href="#overall">整体评价</a>
+      <a href="#eight">前8条评价</a>
+      <a href="#overview">流程总览</a>
+      <a href="#checklist">检查清单</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <section id="goal" class="card">
+        <div class="card-head">
+          <span class="badge">目标</span>
+          <h2>任务目标</h2>
+        </div>
+        <div class="content">
+          <p class="lead">使用任务说明中的<span class="red">指定搜索词</span>，在抖音<span class="red">综合页</span>完成一次搜索体验评价。</p>
+          <ol class="steps">
+            <li>先说明自己为什么要搜，再输入指定搜索词。</li>
+            <li>自由浏览感兴趣内容，建议4个以内，并口述真实感受。</li>
+            <li>自由浏览结束后，填写<span class="red">问卷第4题：整体搜索结果评价</span>。</li>
+            <li>回到搜索结果顶部，从第1条到第8条按顺序逐条评价。</li>
+          </ol>
+          <div class="tip">核心顺序：开始前口述 → 自由浏览 → 第4题整体评价 → 前8条逐条评价。</div>
+        </div>
+      </section>
+
+      <section id="record" class="card">
+        <div class="card-head">
+          <span class="badge">1</span>
+          <h2>第一步｜录屏准备</h2>
+        </div>
+        <div class="content">
+          <div class="grid four">
+            <div class="mini"><strong>开启录屏</strong><p>完整录下操作过程。</p></div>
+            <div class="mini"><strong>打开系统声音</strong><p>保留视频声音。</p></div>
+            <div class="mini"><strong>打开麦克风</strong><p>录到自己的口述。</p></div>
+            <div class="mini"><strong>确认账号</strong><p>使用报名时提供的抖音账号。</p></div>
+          </div>
+          <div class="tip">录屏不要中断，必须录到系统声音和自己的声音。</div>
+        </div>
+      </section>
+
+      <section id="opening" class="card">
+        <div class="card-head">
+          <span class="badge">2</span>
+          <h2>第二步｜开始前先口述搜索目的</h2>
+        </div>
+        <div class="content">
+          <p class="lead">录屏准备完成后，先对着手机说清楚：<span class="red">这次想搜什么、为什么想搜、希望解决什么问题</span>。</p>
+          <div class="prompt-grid">
+            <div class="prompt-card"><strong>想搜什么</strong><p>例如：我这次想搜某个产品、问题、做法或对比。</p></div>
+            <div class="prompt-card"><strong>为什么想搜</strong><p>例如：我最近遇到了什么情况，为什么需要了解它。</p></div>
+            <div class="prompt-card"><strong>希望搜到什么</strong><p>例如：想看到测评、真实经验、解决办法或避坑信息。</p></div>
+          </div>
+          <div class="soft">口述不用很长，30秒左右即可。说自己的真实需求，不要照读示例。</div>
+        </div>
+      </section>
+
+      <section id="search" class="card">
+        <div class="card-head">
+          <span class="badge">3</span>
+          <h2>第三步｜按照指定搜索词搜索</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <ol class="steps">
+              <li>打开抖音搜索页。</li>
+              <li>输入任务说明中的<span class="red">指定搜索词</span>。</li>
+              <li>点击搜索。</li>
+              <li>确认停留在<span class="red">综合</span>页。</li>
+            </ol>
+            <div class="soft">不要自行更换搜索词，也不要切换到“视频”“用户”“商品”“直播”等其他标签页。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/douyin-search-results.jpg" aria-label="放大查看综合页截图">
+              <img src="assets/douyin-search-results.jpg" alt="抖音搜索结果综合页截图" />
+            </button>
+            <figcaption class="caption">示例：搜索后应停留在“综合”页。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="browse" class="card">
+        <div class="card-head">
+          <span class="badge">4</span>
+          <h2>第四步｜自由浏览并口述</h2>
+        </div>
+        <div class="content">
+          <p class="lead">在综合页里，按自己的兴趣选择想看的内容，<span class="red">建议4个以内</span>。</p>
+          <ul class="bullets">
+            <li>自由选择，不需要按顺序。</li>
+            <li>点开后边看边说真实想法。</li>
+            <li>这一步只浏览和口述，不填写逐条评价。</li>
+          </ul>
+          <div class="prompt-grid">
+            <div class="prompt-card"><strong>为什么点开</strong><p>标题、封面、作者或内容看起来是否吸引你。</p></div>
+            <div class="prompt-card"><strong>是否有帮助</strong><p>内容是否回答了你的问题，有没有新的信息。</p></div>
+            <div class="prompt-card"><strong>整体感受</strong><p>是否真实、清楚、像广告、无关或重复。</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overall" class="card">
+        <div class="card-head">
+          <span class="badge">5</span>
+          <h2>第五步｜填写问卷第4题：整体评价</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">自由浏览结束后，先填写<span class="red">问卷第4题</span>。</p>
+            <p>这一题评价的是<span class="red">本次搜索结果整体表现</span>，不是某一条视频。</p>
+            <div class="compare">
+              <div><span class="blue">整体评价</span><br />看这次搜索整体好不好</div>
+              <div><span class="blue">逐条评价</span><br />看前8条每条好不好</div>
+            </div>
+            <div class="soft">口述时可以说：整体是否相关、有没有想点开的内容、质量是否可靠、有没有广告感或无关内容。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/overall-rating.jpg" aria-label="放大查看整体评价题截图">
+              <img src="assets/overall-rating.jpg" alt="问卷整体搜索结果评价题截图" />
+            </button>
+            <figcaption class="caption">问卷第4题：对本次搜索整体做判断。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="eight" class="card">
+        <div class="card-head">
+          <span class="badge">6</span>
+          <h2>第六步｜回到顶部，评价前8条</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">完成整体评价后，回到抖音搜索结果页顶部，按综合页顺序评价前8条。</p>
+            <div class="flow">
+              <div class="flow-step">第1条 → 点开 → 填第1条评价</div>
+              <div class="arrow">↓</div>
+              <div class="flow-step">第2条 → 点开 → 填第2条评价</div>
+              <div class="arrow">↓</div>
+              <div class="flow-step">一直完成到第8条</div>
+            </div>
+            <div class="tip">不要跳过；不要只评价喜欢的内容；自由浏览看过的内容也要按顺序评价。</div>
+            <div class="soft">逐条口述可围绕：这一条是否解决问题、哪里有帮助、哪里不足、是否愿意继续看。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/item-rating.jpg" aria-label="放大查看逐条评价题截图">
+              <img src="assets/item-rating.jpg" alt="问卷逐条内容评价题截图" />
+            </button>
+            <figcaption class="caption">逐条评价题：每一题对应综合页中的一条搜索结果。</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="overview" class="card">
+        <div class="card-head">
+          <span class="badge">总览</span>
+          <h2>完整流程总览</h2>
+        </div>
+        <div class="content">
+          <div class="flow">
+            <div class="flow-step">录屏准备</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">口述：想搜什么、为什么搜、希望解决什么问题</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">输入指定搜索词</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">停留在综合页</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">自由浏览感兴趣内容，并口述</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">填写问卷第4题：整体搜索结果评价</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">回到搜索结果页顶部</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">从第1条到第8条逐条评价</div>
+            <div class="arrow">↓</div>
+            <div class="flow-step">提交问卷</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="checklist" class="card">
+        <div class="card-head">
+          <span class="badge">✓</span>
+          <h2>开始任务前检查清单</h2>
+        </div>
+        <div class="content">
+          <div class="checklist">
+            <label class="check-item"><input type="checkbox" />我已开启手机录屏、系统声音和麦克风</label>
+            <label class="check-item"><input type="checkbox" />我已打开问卷，并确认登录报名时提供的抖音账号</label>
+            <label class="check-item"><input type="checkbox" />我已确认任务说明中的指定搜索词</label>
+            <label class="check-item"><input type="checkbox" />我知道搜索前要先口述搜索目的</label>
+            <label class="check-item"><input type="checkbox" />我知道搜索后要停留在“综合”页</label>
+            <label class="check-item"><input type="checkbox" />我知道先自由浏览并口述，建议4个以内</label>
+            <label class="check-item"><input type="checkbox" />我知道自由浏览后先完成问卷第4题整体评价</label>
+            <label class="check-item"><input type="checkbox" />我知道最后要回到顶部，按顺序完成前8条逐条评价</label>
+          </div>
+          <div id="readyMessage" class="ready">准备完成，可以开始任务。</div>
+        </div>
+      </section>
+
+      <footer>请按照任务说明中的指定搜索词完成任务</footer>
+    </div>
+  </main>
+
+  <button class="back-top" type="button" id="backTop">返回顶部</button>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="close" type="button" id="lightboxClose" aria-label="关闭图片预览">×</button>
+    <img id="lightboxImage" src="" alt="截图预览" />
+  </div>
+
+  <script>
+    document.getElementById('backTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const checklistInputs = Array.from(document.querySelectorAll('.checklist input'));
+    const readyMessage = document.getElementById('readyMessage');
+    checklistInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        readyMessage.classList.toggle('show', checklistInputs.every(item => item.checked));
+      });
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const closeButton = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('[data-img]').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.img;
+        lightbox.classList.add('show');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+    }
+
+    closeButton.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>
