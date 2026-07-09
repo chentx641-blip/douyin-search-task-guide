@@ -246,27 +246,60 @@
     .step-check {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       margin-top: 14px;
-      padding: 11px 12px;
-      border: 1px solid #b9cdf7;
-      border-radius: 12px;
-      background: #f7fbff;
+      padding: 13px;
+      border: 2px solid #9dbdf8;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff, #f2f7ff);
       color: var(--blue-dark);
       font-weight: 900;
       cursor: pointer;
       user-select: none;
+      box-shadow: 0 8px 18px rgba(11,92,255,.09);
+      transition: border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease;
     }
     .step-check input {
       flex: 0 0 auto;
-      width: 20px;
-      height: 20px;
-      margin-top: 3px;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      margin-top: 1px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      background: #fff;
       accent-color: var(--blue);
+      display: grid;
+      place-items: center;
+    }
+    .step-check input::after {
+      content: "";
+      width: 8px;
+      height: 14px;
+      border: solid #fff;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg) scale(0);
+      transition: transform .15s ease;
+    }
+    .step-check input:checked {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .step-check input:checked::after {
+      transform: rotate(45deg) scale(1);
+    }
+    .step-check:has(input:checked) {
+      border-color: #86d69f;
+      background: #ecfbf1;
+      color: #075e2a;
+      box-shadow: 0 8px 18px rgba(20,148,71,.12);
+    }
+    .step-check:hover {
+      transform: translateY(-1px);
     }
     .completion-panel {
       display: none;
-      margin-bottom: 14px;
+      margin: 14px 0 6px;
       padding: 16px;
       border: 1px solid #98e0b1;
       border-radius: 16px;
@@ -277,6 +310,12 @@
       box-shadow: var(--shadow);
     }
     .completion-panel.show { display: block; }
+    .progress-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
 
     .back-top {
       position: fixed;
@@ -379,8 +418,6 @@
 
   <main>
     <div class="wrap">
-      <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
-
       <section id="goal" class="card">
         <div class="card-head">
           <span class="badge">目标</span>
@@ -411,7 +448,7 @@
             <div class="mini"><strong>确认账号</strong><p>使用报名时提供的抖音账号。</p></div>
           </div>
           <div class="tip">录屏不要中断，必须录到系统声音和自己的声音。</div>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第1步：录屏、系统声音、麦克风和账号确认</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：录屏、系统声音、麦克风和账号确认</span></label>
         </div>
       </section>
 
@@ -436,7 +473,7 @@
             </button>
             <figcaption class="caption">问卷第3题：口述搜索目的后，把搜索词复制到输入框。</figcaption>
           </figure>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第2步：口述搜索目的，并填写问卷第3题搜索词</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：口述搜索目的，并填写问卷第3题搜索词</span></label>
         </div>
       </section>
 
@@ -461,7 +498,7 @@
             </button>
             <figcaption class="caption">示例：搜索后应停留在“综合”页。</figcaption>
           </figure>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第3步：用指定搜索词搜索，并停留在综合页</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：用指定搜索词搜索，并停留在综合页</span></label>
         </div>
       </section>
 
@@ -496,7 +533,7 @@
               <figcaption class="caption">点开内容后，边看边口述：为什么点开、有没有帮助、哪里好或不好。</figcaption>
             </figure>
           </div>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第4步：自由浏览感兴趣内容，并边看边口述</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：自由浏览感兴趣内容，并边看边口述</span></label>
         </div>
       </section>
 
@@ -521,7 +558,7 @@
             </button>
             <figcaption class="caption">问卷第4题：对本次搜索整体做判断。</figcaption>
           </figure>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第5步：填写问卷第4题整体搜索结果评价</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：填写问卷第4题整体搜索结果评价</span></label>
         </div>
       </section>
 
@@ -560,7 +597,7 @@
             </button>
             <figcaption class="caption">逐条评价题：每一题对应综合页中的一条搜索结果。不要跳过，不要只评价喜欢的内容。</figcaption>
           </figure>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已完成第6步：按顺序完成前8条逐条口述和评价</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：按顺序完成前8条逐条口述和评价</span></label>
         </div>
       </section>
 
@@ -587,7 +624,9 @@
             <div class="arrow">↓</div>
             <div class="flow-step">提交问卷</div>
           </div>
-          <label class="step-check"><input type="checkbox" class="step-done" />我已提交问卷，并确认录屏完整保存</label>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成最后确认：已提交问卷，并确认录屏完整保存</span></label>
+          <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
+          <div id="progressNote" class="progress-note">完成每个步骤后勾选一次，全部勾选后这里会显示任务完成。</div>
         </div>
       </section>
 
@@ -609,11 +648,24 @@
 
     const stepInputs = Array.from(document.querySelectorAll('.step-done'));
     const completionPanel = document.getElementById('completionPanel');
+    const progressNote = document.getElementById('progressNote');
+    const originalTexts = new Map(stepInputs.map(input => [input, input.nextElementSibling.textContent]));
     function updateCompletion() {
+      const finished = stepInputs.filter(input => input.checked).length;
       const complete = stepInputs.length > 0 && stepInputs.every(input => input.checked);
+      stepInputs.forEach(input => {
+        const text = input.nextElementSibling;
+        text.textContent = input.checked
+          ? originalTexts.get(input).replace(/^完成本步骤|^完成最后确认/, '已完成')
+          : originalTexts.get(input);
+      });
+      progressNote.textContent = complete
+        ? '所有步骤已完成，请确认录屏完整保存。'
+        : `当前已完成 ${finished}/${stepInputs.length} 项。完成每个步骤后勾选一次，避免漏做。`;
       completionPanel.classList.toggle('show', complete);
     }
     stepInputs.forEach(input => input.addEventListener('change', updateCompletion));
+    updateCompletion();
 
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
