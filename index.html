@@ -232,6 +232,62 @@
       display: grid;
       gap: 12px;
     }
+    .quick-flow {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      overflow-x: auto;
+      padding: 2px 0 8px;
+      scrollbar-width: none;
+    }
+    .quick-flow::-webkit-scrollbar { display: none; }
+    .quick-node {
+      flex: 0 0 auto;
+      min-width: 96px;
+      padding: 10px 12px;
+      border: 1px solid #b9cdf7;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #f2f7ff);
+      text-align: center;
+      font-weight: 900;
+      color: #091a3f;
+    }
+    .quick-node small {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .quick-arrow {
+      flex: 0 0 auto;
+      color: var(--blue);
+      font-weight: 900;
+    }
+    .phase-mini-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .phase-mini {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .phase-mini strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+      color: #091a3f;
+    }
+    .phase-mini ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .phase-mini li { margin: 3px 0; }
     .phase {
       border: 1px solid var(--line);
       border-radius: 16px;
@@ -281,6 +337,15 @@
       border: 1px solid #f1d68b;
       font-weight: 800;
       color: #4d3400;
+    }
+    .overview-key {
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #ffd1d1;
+      background: #fff3f3;
+      color: #501313;
+      font-weight: 900;
+      text-align: center;
     }
     .compare {
       display: grid;
@@ -662,61 +727,42 @@
         </div>
         <div class="content">
           <div class="overview-map">
-            <div class="phase">
-              <div class="phase-title">准备与搜索</div>
-              <div class="phase-body">
-                <div class="overview-step">
-                  <strong>1. 录屏准备</strong>
-                  <span>开启录屏、系统声音和麦克风，确保录到视频声音和自己的声音。</span>
-                </div>
-                <div class="arrow">↓</div>
-                <div class="overview-step">
-                  <strong>2. 口述并填写搜索词</strong>
-                  <span>说清楚想搜什么、为什么搜、希望解决什么问题；再在问卷第3题输入搜索词。</span>
-                </div>
-                <div class="arrow">↓</div>
-                <div class="overview-step">
-                  <strong>3. 进入抖音综合页</strong>
-                  <span>用指定搜索词搜索，停留在“综合”页，不切换到其他标签页。</span>
-                </div>
+            <div class="quick-flow" aria-label="任务总流程">
+              <div class="quick-node">录屏准备<small>开麦克风</small></div>
+              <div class="quick-arrow">→</div>
+              <div class="quick-node">口述需求<small>填搜索词</small></div>
+              <div class="quick-arrow">→</div>
+              <div class="quick-node">综合页搜索<small>不换标签</small></div>
+              <div class="quick-arrow">→</div>
+              <div class="quick-node">自由浏览<small>第一部分</small></div>
+              <div class="quick-arrow">→</div>
+              <div class="quick-node">整体评价<small>第4题</small></div>
+              <div class="quick-arrow">→</div>
+              <div class="quick-node">前8条评价<small>第二部分</small></div>
+            </div>
+
+            <div class="overview-key">先自由浏览，再整体评价；最后才按顺序评价前8条。</div>
+
+            <div class="phase-mini-grid">
+              <div class="phase-mini">
+                <strong>问卷第一部分：自由浏览</strong>
+                <ul>
+                  <li>按兴趣点开内容，不需要按顺序。</li>
+                  <li>可按习惯看评论、点赞、收藏或返回。</li>
+                  <li>边看边口述：是否满足需求、哪里好或不好。</li>
+                </ul>
+              </div>
+              <div class="phase-mini">
+                <strong>问卷第二部分：前8条逐条评价</strong>
+                <ul>
+                  <li>先回到综合页顶部，<span class="red">不要刷新</span>。</li>
+                  <li>从第1条到第8条，按顺序逐条点开。</li>
+                  <li>每条都要口述并填写对应评价，不要跳过。</li>
+                </ul>
               </div>
             </div>
 
-            <div class="phase">
-              <div class="phase-title">问卷第一部分｜自由浏览体验</div>
-              <div class="phase-body">
-                <div class="overview-step">
-                  <strong>4. 自由浏览并口述</strong>
-                  <span>看到感兴趣的结果就点进去，按自己的习惯查看，可看评论、点赞、收藏或返回继续浏览；边操作边说真实感受。</span>
-                </div>
-                <div class="arrow">↓</div>
-                <div class="overview-step">
-                  <strong>5. 填写整体评价</strong>
-                  <span>自由浏览结束后，填写问卷第4题，评价这次搜索结果整体表现。</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="phase alt">
-              <div class="phase-title alt">问卷第二部分｜前8条逐条评价</div>
-              <div class="phase-body">
-                <div class="overview-step">
-                  <strong>6. 回到搜索结果顶部</strong>
-                  <span>回到综合页最上方，<span class="red">不要刷新页面</span>，避免搜索结果顺序变化。</span>
-                </div>
-                <div class="arrow">↓</div>
-                <div class="overview-step">
-                  <strong>7. 按顺序评价前8条</strong>
-                  <span>从第1条到第8条逐条点开、观看、口述，再填写对应评价；不要跳过，也不要只评价喜欢的内容。</span>
-                </div>
-                <div class="arrow">↓</div>
-                <div class="overview-step">
-                  <strong>8. 提交问卷</strong>
-                  <span>确认所有评价已完成，再提交问卷并保存完整录屏。</span>
-                </div>
-                <div class="phase-note">记住：第一部分是自由浏览，第二部分才是按顺序评价前8条。</div>
-              </div>
-            </div>
+            <div class="phase-note">提交前检查：录屏完整、声音正常、问卷已填写完成。</div>
           </div>
           <label class="step-check"><input type="checkbox" class="step-done" /><span>完成最后确认：已提交问卷，并确认录屏完整保存</span></label>
           <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
