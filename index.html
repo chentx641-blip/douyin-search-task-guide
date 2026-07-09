@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>抖音搜索任务操作指南</title>
+  <style>
+    :root {
+      --blue: #0b5cff;
+      --blue-dark: #073a9b;
+      --red: #e52222;
+      --text: #172033;
+      --muted: #667085;
+      --line: #d9e5f7;
+      --bg: #f5f8ff;
+      --card: #fff;
+      --yellow: #fff7df;
+      --green: #149447;
+      --shadow: 0 10px 26px rgba(15, 54, 120, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.62;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .hero {
+      padding: 24px 16px 18px;
+      color: #fff;
+      background: linear-gradient(135deg, #063db8, #0b66ff 64%, #1aa3ff);
+      border-bottom-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+    }
+    .wrap { width: min(100%, 980px); margin: 0 auto; }
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: clamp(28px, 7vw, 42px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+    .hero p { margin: 0; color: rgba(255,255,255,.92); font-size: 17px; }
+    .top-alert {
+      margin-top: 15px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 14px;
+      background: rgba(255,255,255,.16);
+      font-weight: 900;
+    }
+    .hero-flow, .nav .wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hero-flow { margin-top: 14px; }
+    .hero-flow::-webkit-scrollbar, .nav .wrap::-webkit-scrollbar { display: none; }
+    .hero-flow span {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.16);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(245,248,255,.94);
+      backdrop-filter: blur(10px);
+    }
+    .nav a {
+      flex: 0 0 auto;
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--blue-dark);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    main { padding: 16px 14px 42px; }
+    section { scroll-margin-top: 76px; margin-bottom: 14px; }
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .card-head {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 16px 16px 0;
+    }
+    .badge {
+      min-width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+    }
+    h2 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.3;
+      color: #091a3f;
+    }
+    .content { padding: 14px 16px 16px; }
+    .lead { margin: 0 0 10px; font-size: 17px; }
+    .red { color: var(--red); font-weight: 900; }
+    .blue { color: var(--blue-dark); font-weight: 900; }
+    .tip {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #ffd1d1;
+      background: #fff3f3;
+      color: #501313;
+      font-weight: 850;
+    }
+    .soft {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #f1d68b;
+      background: var(--yellow);
+      font-weight: 750;
+    }
+    .steps, .bullets, .mini-points {
+      margin: 0;
+      padding-left: 22px;
+    }
+    .steps li, .bullets li, .mini-points li { margin: 6px 0; }
+    .mini-points {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2px 16px;
+      margin-top: 10px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+    .mini, .prompt-card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+    .mini strong, .prompt-card strong { display: block; margin-bottom: 4px; }
+    .mini p, .prompt-card p { margin: 0; color: var(--muted); }
+    .prompt-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .image-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 13px;
+    }
+    .image-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .image-card button {
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+    .image-card img {
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      background: #f7f9fc;
+    }
+    .caption {
+      padding: 9px 11px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 8px;
+    }
+    .flow-step {
+      padding: 12px;
+      border: 1px solid #b9cdf7;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #f2f7ff);
+      text-align: center;
+      font-weight: 900;
+    }
+    .arrow {
+      color: var(--blue);
+      text-align: center;
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .overview-map {
+      display: grid;
+      gap: 12px;
+    }
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbfdff;
+      overflow: hidden;
+    }
+    .phase-title {
+      padding: 10px 12px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+    }
+    .phase-title.alt {
+      background: #0f766e;
+    }
+    .phase-body {
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .overview-step {
+      padding: 12px;
+      border: 1px solid #b9cdf7;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #f2f7ff);
+    }
+    .overview-step strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #091a3f;
+      font-size: 16px;
+    }
+    .overview-step span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .phase.alt .overview-step {
+      border-color: #a7d7d2;
+      background: linear-gradient(180deg, #fff, #f0fdfa);
+    }
+    .phase-note {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--yellow);
+      border: 1px solid #f1d68b;
+      font-weight: 800;
+      color: #4d3400;
+    }
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .compare div {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f7fbff;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .step-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-top: 14px;
+      padding: 13px;
+      border: 2px solid #9dbdf8;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff, #f2f7ff);
+      color: var(--blue-dark);
+      font-weight: 900;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 8px 18px rgba(11,92,255,.09);
+      transition: border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .step-check input {
+      flex: 0 0 auto;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      margin-top: 1px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      background: #fff;
+      accent-color: var(--blue);
+      display: grid;
+      place-items: center;
+    }
+    .step-check input::after {
+      content: "";
+      width: 8px;
+      height: 14px;
+      border: solid #fff;
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg) scale(0);
+      transition: transform .15s ease;
+    }
+    .step-check input:checked {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .step-check input:checked::after {
+      transform: rotate(45deg) scale(1);
+    }
+    .step-check:has(input:checked) {
+      border-color: #86d69f;
+      background: #ecfbf1;
+      color: #075e2a;
+      box-shadow: 0 8px 18px rgba(20,148,71,.12);
+    }
+    .step-check:hover {
+      transform: translateY(-1px);
+    }
+    .completion-panel {
+      display: none;
+      margin: 14px 0 6px;
+      padding: 16px;
+      border: 1px solid #98e0b1;
+      border-radius: 16px;
+      background: #eafaf0;
+      color: #075e2a;
+      text-align: center;
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+    .completion-panel.show { display: block; }
+    .progress-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .back-top {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 20;
+      padding: 10px 13px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      box-shadow: 0 10px 22px rgba(11,92,255,.28);
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(5,16,38,.82);
+    }
+    .lightbox.show { display: flex; }
+    .lightbox img {
+      max-width: min(100%, 960px);
+      max-height: 88vh;
+      border-radius: 12px;
+      background: #fff;
+    }
+    .close {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    footer {
+      padding: 20px 0 8px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (min-width: 760px) {
+      main { padding-inline: 22px; }
+      .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .prompt-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+      .image-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content, .card-head { padding-inline: 20px; }
+      .card-head { padding-top: 20px; }
+    }
+
+    @media (max-width: 620px) {
+      .grid.four, .compare, .mini-points { grid-template-columns: 1fr; }
+      h2 { font-size: 20px; }
+      .image-card img { max-height: 450px; }
+    }
+  </style>
+</head>
+<body id="top">
+  <header class="hero">
+    <div class="wrap">
+      <h1>抖音搜索任务操作指南</h1>
+      <p>按指定搜索词完成口述、浏览、整体评价与逐条内容评价</p>
+      <div class="top-alert">开始前：开启手机录屏、系统声音和麦克风，并先口述搜索目的。</div>
+      <div class="hero-flow">
+        <span>录屏准备</span>
+        <span>→ 口述并输入搜索词</span>
+        <span>→ 指定搜索</span>
+        <span>→ 自由浏览并口述</span>
+        <span>→ 第4题整体评价</span>
+        <span>→ 前8条逐条评价</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="页面目录">
+    <div class="wrap">
+      <a href="#goal">任务目标</a>
+      <a href="#record">录屏准备</a>
+      <a href="#opening">口述搜索词</a>
+      <a href="#search">指定搜索</a>
+      <a href="#browse">自由浏览</a>
+      <a href="#overall">整体评价</a>
+      <a href="#eight">逐条评价</a>
+      <a href="#overview">流程总览</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <section id="goal" class="card">
+        <div class="card-head">
+          <span class="badge">目标</span>
+          <h2>任务目标</h2>
+        </div>
+        <div class="content">
+          <p class="lead">使用任务说明中的<span class="red">指定搜索词</span>，在抖音<span class="red">综合页</span>完成一次搜索体验评价。</p>
+          <ol class="steps">
+            <li>先口述自己想搜什么、为什么搜、希望解决什么问题，并在问卷中输入搜索词。</li>
+            <li>进入抖音搜索，在综合页自由浏览感兴趣内容，并边看边口述。</li>
+            <li>自由浏览结束后，填写<span class="red">问卷第4题：整体搜索结果评价</span>。</li>
+            <li>回到搜索结果顶部，从第1条到第8条按顺序逐条点开、口述并评价。</li>
+          </ol>
+          <div class="tip">核心顺序：口述并输入搜索词 → 自由浏览并口述 → 第4题整体评价 → 前8条逐条评价。</div>
+        </div>
+      </section>
+
+      <section id="record" class="card">
+        <div class="card-head">
+          <span class="badge">1</span>
+          <h2>第一步｜录屏准备</h2>
+        </div>
+        <div class="content">
+          <div class="grid four">
+            <div class="mini"><strong>开启录屏</strong><p>完整录下操作过程。</p></div>
+            <div class="mini"><strong>打开系统声音</strong><p>保留视频声音。</p></div>
+            <div class="mini"><strong>打开麦克风</strong><p>录到自己的口述。</p></div>
+            <div class="mini"><strong>确认账号</strong><p>使用报名时提供的抖音账号。</p></div>
+          </div>
+          <div class="tip">录屏不要中断，必须录到系统声音和自己的声音。</div>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：录屏、系统声音、麦克风和账号确认</span></label>
+        </div>
+      </section>
+
+      <section id="opening" class="card">
+        <div class="card-head">
+          <span class="badge">2</span>
+          <h2>第二步｜口述搜索目的，并输入搜索词</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">录屏准备完成后，先口述搜索目的，再把<span class="red">指定搜索词</span>填入问卷第3题。</p>
+            <div class="prompt-grid">
+              <div class="prompt-card"><strong>想搜什么</strong><p>这次准备搜索什么内容或问题。</p></div>
+              <div class="prompt-card"><strong>为什么想搜</strong><p>最近遇到什么情况，为什么需要了解。</p></div>
+              <div class="prompt-card"><strong>希望搜到什么</strong><p>想看到测评、经验、解决办法或避坑信息。</p></div>
+            </div>
+            <div class="soft">这一步除了口述，也要在问卷中输入搜索词，然后点击下一页。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/question-search-term.jpg" aria-label="放大查看问卷第3题截图">
+              <img src="assets/question-search-term.jpg" alt="问卷第3题：输入本次搜索词" />
+            </button>
+            <figcaption class="caption">问卷第3题：口述搜索目的后，把搜索词复制到输入框。</figcaption>
+          </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：口述搜索目的，并填写问卷第3题搜索词</span></label>
+        </div>
+      </section>
+
+      <section id="search" class="card">
+        <div class="card-head">
+          <span class="badge">3</span>
+          <h2>第三步｜按照指定搜索词搜索</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <ol class="steps">
+              <li>打开抖音搜索页。</li>
+              <li>输入任务说明中的<span class="red">指定搜索词</span>。</li>
+              <li>点击搜索。</li>
+              <li>确认停留在<span class="red">综合</span>页。</li>
+            </ol>
+            <div class="soft">不要自行更换搜索词，也不要切换到“视频”“用户”“商品”“直播”等其他标签页。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/douyin-search-results.jpg" aria-label="放大查看综合页截图">
+              <img src="assets/douyin-search-results.jpg" alt="抖音搜索结果综合页截图" />
+            </button>
+            <figcaption class="caption">示例：搜索后应停留在“综合”页。</figcaption>
+          </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：用指定搜索词搜索，并停留在综合页</span></label>
+        </div>
+      </section>
+
+      <section id="browse" class="card">
+        <div class="card-head">
+          <span class="badge">4</span>
+          <h2>第四步｜自由浏览并口述</h2>
+        </div>
+        <div class="content">
+          <p class="lead">看到问卷提示后，就可以回到抖音综合页，按自己的兴趣选择想看的内容，<span class="red">建议4个以内</span>。</p>
+          <ul class="bullets">
+            <li>自由选择，不需要按顺序。</li>
+            <li>点开后边看边说真实想法。</li>
+            <li>这一步只浏览和口述，不填写逐条评价。</li>
+          </ul>
+          <div class="prompt-grid">
+            <div class="prompt-card"><strong>为什么点开</strong><p>标题、封面、作者或内容哪里吸引你。</p></div>
+            <div class="prompt-card"><strong>是否满足需求</strong><p>有没有回答你的问题，哪些内容比较好。</p></div>
+            <div class="prompt-card"><strong>哪里不够好</strong><p>是否不相关、重复、广告感强或信息不清楚。</p></div>
+          </div>
+          <div class="image-grid two">
+            <figure class="image-card">
+              <button type="button" data-img="assets/browse-start-question.jpg" aria-label="放大查看自由浏览开始提示">
+                <img src="assets/browse-start-question.jpg" alt="问卷提示：开始自由浏览搜索结果" />
+              </button>
+              <figcaption class="caption">看到这个问卷页面后，回到抖音开始自由浏览。</figcaption>
+            </figure>
+            <figure class="image-card">
+              <button type="button" data-img="assets/browse-video-example.jpg" aria-label="放大查看点开视频示例">
+                <img src="assets/browse-video-example.jpg" alt="自由浏览时点开某个视频并口述评价" />
+              </button>
+              <figcaption class="caption">点开内容后，边看边口述：为什么点开、有没有帮助、哪里好或不好。</figcaption>
+            </figure>
+          </div>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：自由浏览感兴趣内容，并边看边口述</span></label>
+        </div>
+      </section>
+
+      <section id="overall" class="card">
+        <div class="card-head">
+          <span class="badge">5</span>
+          <h2>第五步｜填写问卷第4题：整体评价</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">自由浏览结束后，先填写<span class="red">问卷第4题</span>。</p>
+            <p>这一题评价的是<span class="red">本次搜索结果整体表现</span>，不是某一条视频。</p>
+            <div class="compare">
+              <div><span class="blue">整体评价</span><br />看这次搜索整体好不好</div>
+              <div><span class="blue">逐条评价</span><br />看前8条每条好不好</div>
+            </div>
+            <div class="soft">口述时可以说：整体是否相关、有没有想点开的内容、质量是否可靠、有没有广告感或无关内容。</div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/overall-rating.jpg" aria-label="放大查看整体评价题截图">
+              <img src="assets/overall-rating.jpg" alt="问卷整体搜索结果评价题截图" />
+            </button>
+            <figcaption class="caption">问卷第4题：对本次搜索整体做判断。</figcaption>
+          </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：填写问卷第4题整体搜索结果评价</span></label>
+        </div>
+      </section>
+
+      <section id="eight" class="card">
+        <div class="card-head">
+          <span class="badge">6</span>
+          <h2>第六步｜回到顶部，逐条评价前8条</h2>
+        </div>
+        <div class="content two-col">
+          <div>
+            <p class="lead">完成整体评价后，回到抖音搜索结果页顶部，按综合页顺序完成前8条。<span class="red">每条都要点开、口述、再填写对应评价</span>。</p>
+            <div class="flow">
+              <div class="flow-step">第1条 → 点开并口述 → 填第1条评价</div>
+              <div class="arrow">↓</div>
+              <div class="flow-step">第2条 → 点开并口述 → 填第2条评价</div>
+              <div class="arrow">↓</div>
+              <div class="flow-step">按顺序一直完成到第8条</div>
+            </div>
+            <div class="soft">
+              逐条口述可以从这些小点里选着说：
+              <ul class="mini-points">
+                <li>这条和搜索词是否相关</li>
+                <li>标题或封面是否清楚</li>
+                <li>内容有没有解决问题</li>
+                <li>哪里有帮助或有新信息</li>
+                <li>哪里不足或没讲清楚</li>
+                <li>是否像广告或带货</li>
+                <li>是否真实可信</li>
+                <li>是否愿意继续看或收藏</li>
+              </ul>
+            </div>
+          </div>
+          <figure class="image-card">
+            <button type="button" data-img="assets/item-rating.jpg" aria-label="放大查看逐条评价题截图">
+              <img src="assets/item-rating.jpg" alt="问卷逐条内容评价题截图" />
+            </button>
+            <figcaption class="caption">逐条评价题：每一题对应综合页中的一条搜索结果。不要跳过，不要只评价喜欢的内容。</figcaption>
+          </figure>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成本步骤：按顺序完成前8条逐条口述和评价</span></label>
+        </div>
+      </section>
+
+      <section id="overview" class="card">
+        <div class="card-head">
+          <span class="badge">总览</span>
+          <h2>完整流程总览</h2>
+        </div>
+        <div class="content">
+          <div class="overview-map">
+            <div class="phase">
+              <div class="phase-title">准备与搜索</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>1. 录屏准备</strong>
+                  <span>开启录屏、系统声音和麦克风，确保录到视频声音和自己的声音。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>2. 口述并填写搜索词</strong>
+                  <span>说清楚想搜什么、为什么搜、希望解决什么问题；再在问卷第3题输入搜索词。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>3. 进入抖音综合页</strong>
+                  <span>用指定搜索词搜索，停留在“综合”页，不切换到其他标签页。</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phase">
+              <div class="phase-title">问卷第一部分｜自由浏览体验</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>4. 自由浏览并口述</strong>
+                  <span>看到感兴趣的结果就点进去，按自己的习惯查看，可看评论、点赞、收藏或返回继续浏览；边操作边说真实感受。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>5. 填写整体评价</strong>
+                  <span>自由浏览结束后，填写问卷第4题，评价这次搜索结果整体表现。</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phase alt">
+              <div class="phase-title alt">问卷第二部分｜前8条逐条评价</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>6. 回到搜索结果顶部</strong>
+                  <span>回到综合页最上方，<span class="red">不要刷新页面</span>，避免搜索结果顺序变化。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>7. 按顺序评价前8条</strong>
+                  <span>从第1条到第8条逐条点开、观看、口述，再填写对应评价；不要跳过，也不要只评价喜欢的内容。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>8. 提交问卷</strong>
+                  <span>确认所有评价已完成，再提交问卷并保存完整录屏。</span>
+                </div>
+                <div class="phase-note">记住：第一部分是自由浏览，第二部分才是按顺序评价前8条。</div>
+              </div>
+            </div>
+          </div>
+          <label class="step-check"><input type="checkbox" class="step-done" /><span>完成最后确认：已提交问卷，并确认录屏完整保存</span></label>
+          <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
+          <div id="progressNote" class="progress-note">完成每个步骤后勾选一次，全部勾选后这里会显示任务完成。</div>
+        </div>
+      </section>
+
+      <footer>请按照任务说明中的指定搜索词完成任务。每完成一步，就勾选一次，避免漏做。</footer>
+    </div>
+  </main>
+
+  <button class="back-top" type="button" id="backTop">返回顶部</button>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="close" type="button" id="lightboxClose" aria-label="关闭图片预览">×</button>
+    <img id="lightboxImage" src="" alt="截图预览" />
+  </div>
+
+  <script>
+    document.getElementById('backTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    const stepInputs = Array.from(document.querySelectorAll('.step-done'));
+    const completionPanel = document.getElementById('completionPanel');
+    const progressNote = document.getElementById('progressNote');
+    const originalTexts = new Map(stepInputs.map(input => [input, input.nextElementSibling.textContent]));
+    function updateCompletion() {
+      const finished = stepInputs.filter(input => input.checked).length;
+      const complete = stepInputs.length > 0 && stepInputs.every(input => input.checked);
+      stepInputs.forEach(input => {
+        const text = input.nextElementSibling;
+        text.textContent = input.checked
+          ? originalTexts.get(input).replace(/^完成本步骤|^完成最后确认/, '已完成')
+          : originalTexts.get(input);
+      });
+      progressNote.textContent = complete
+        ? '所有步骤已完成，请确认录屏完整保存。'
+        : `当前已完成 ${finished}/${stepInputs.length} 项。完成每个步骤后勾选一次，避免漏做。`;
+      completionPanel.classList.toggle('show', complete);
+    }
+    stepInputs.forEach(input => input.addEventListener('change', updateCompletion));
+    updateCompletion();
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const closeButton = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('[data-img]').forEach(button => {
+      button.addEventListener('click', () => {
+        lightboxImage.src = button.dataset.img;
+        lightbox.classList.add('show');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('show');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+    }
+
+    closeButton.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', event => {
+      if (event.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeLightbox();
+    });
+  </script>
+</body>
+</html>
