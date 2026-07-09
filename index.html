@@ -228,6 +228,60 @@
       font-weight: 900;
       line-height: 1;
     }
+    .overview-map {
+      display: grid;
+      gap: 12px;
+    }
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbfdff;
+      overflow: hidden;
+    }
+    .phase-title {
+      padding: 10px 12px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+    }
+    .phase-title.alt {
+      background: #0f766e;
+    }
+    .phase-body {
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+    .overview-step {
+      padding: 12px;
+      border: 1px solid #b9cdf7;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fff, #f2f7ff);
+    }
+    .overview-step strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #091a3f;
+      font-size: 16px;
+    }
+    .overview-step span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .phase.alt .overview-step {
+      border-color: #a7d7d2;
+      background: linear-gradient(180deg, #fff, #f0fdfa);
+    }
+    .phase-note {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: var(--yellow);
+      border: 1px solid #f1d68b;
+      font-weight: 800;
+      color: #4d3400;
+    }
     .compare {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -607,22 +661,62 @@
           <h2>完整流程总览</h2>
         </div>
         <div class="content">
-          <div class="flow">
-            <div class="flow-step">录屏准备</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">口述搜索目的，并在问卷第3题输入搜索词</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">在抖音输入指定搜索词，停留在综合页</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">自由浏览感兴趣内容，并口述评价</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">填写问卷第4题：整体搜索结果评价</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">回到搜索结果页顶部</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">从第1条到第8条逐条点开、口述并评价</div>
-            <div class="arrow">↓</div>
-            <div class="flow-step">提交问卷</div>
+          <div class="overview-map">
+            <div class="phase">
+              <div class="phase-title">准备与搜索</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>1. 录屏准备</strong>
+                  <span>开启录屏、系统声音和麦克风，确保录到视频声音和自己的声音。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>2. 口述并填写搜索词</strong>
+                  <span>说清楚想搜什么、为什么搜、希望解决什么问题；再在问卷第3题输入搜索词。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>3. 进入抖音综合页</strong>
+                  <span>用指定搜索词搜索，停留在“综合”页，不切换到其他标签页。</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phase">
+              <div class="phase-title">问卷第一部分｜自由浏览体验</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>4. 自由浏览并口述</strong>
+                  <span>看到感兴趣的结果就点进去，按自己的习惯查看，可看评论、点赞、收藏或返回继续浏览；边操作边说真实感受。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>5. 填写整体评价</strong>
+                  <span>自由浏览结束后，填写问卷第4题，评价这次搜索结果整体表现。</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="phase alt">
+              <div class="phase-title alt">问卷第二部分｜前8条逐条评价</div>
+              <div class="phase-body">
+                <div class="overview-step">
+                  <strong>6. 回到搜索结果顶部</strong>
+                  <span>回到综合页最上方，<span class="red">不要刷新页面</span>，避免搜索结果顺序变化。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>7. 按顺序评价前8条</strong>
+                  <span>从第1条到第8条逐条点开、观看、口述，再填写对应评价；不要跳过，也不要只评价喜欢的内容。</span>
+                </div>
+                <div class="arrow">↓</div>
+                <div class="overview-step">
+                  <strong>8. 提交问卷</strong>
+                  <span>确认所有评价已完成，再提交问卷并保存完整录屏。</span>
+                </div>
+                <div class="phase-note">记住：第一部分是自由浏览，第二部分才是按顺序评价前8条。</div>
+              </div>
+            </div>
           </div>
           <label class="step-check"><input type="checkbox" class="step-done" /><span>完成最后确认：已提交问卷，并确认录屏完整保存</span></label>
           <div id="completionPanel" class="completion-panel">任务完成。请确认问卷已提交，录屏完整保存。</div>
