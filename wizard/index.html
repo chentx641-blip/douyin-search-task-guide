@@ -345,31 +345,46 @@
     .completion-badge {
       position: relative;
       margin-top: 2px;
-      padding: 16px;
+      padding: 20px 16px;
       border: 1px solid #b7d4ff;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #f2f7ff, #fffdf3);
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.96), rgba(255,255,255,0) 42%),
+        linear-gradient(135deg, #eef5ff, #f8fbff 48%, #fff7df);
       box-shadow: 0 14px 28px rgba(11, 92, 255, .12);
+      text-align: center;
     }
     .completion-badge strong {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 92px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      color: #fff;
-      background: var(--blue);
+      width: 112px;
+      height: 112px;
+      margin: 0 auto;
+      border: 10px solid #dbe9ff;
+      border-top-color: var(--blue);
+      border-right-color: #20a4ff;
+      border-radius: 50%;
+      color: var(--blue-dark);
+      background: #fff;
       font-size: 18px;
       line-height: 1;
       letter-spacing: .08em;
+      box-shadow: inset 0 0 0 1px #eef5ff, 0 12px 24px rgba(11,92,255,.14);
     }
     .completion-badge span {
       display: block;
-      margin-top: 10px;
+      margin-top: 14px;
       color: #172033;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 950;
+    }
+    .completion-badge em {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-style: normal;
+      font-weight: 850;
     }
     .complete-notice {
       padding: 12px 13px;
@@ -534,7 +549,7 @@
   <main class="app">
     <header class="top">
       <h1>抖音搜索任务指南</h1>
-      <p>按步骤完成搜索、浏览、评价与提交确认。</p>
+      <p>按指定搜索词完成口述、浏览、整体评价与逐条内容评价</p>
     </header>
 
     <section class="progress-card" aria-label="当前进度">
@@ -579,12 +594,13 @@
     <section class="complete-page" id="completePage" aria-live="polite">
       <div class="complete-hero">
         <h2>任务已完成</h2>
-        <p>请回到正式问卷或任务页面继续提交，并保留好录屏材料。</p>
+        <p>请保留好录屏材料，并回到正式问卷或任务页面继续处理。</p>
       </div>
 
       <div class="completion-badge" aria-label="流程通关提示">
-        <strong>CLEAR</strong>
-        <span>流程已走完，请返回正式页面继续提交</span>
+        <strong>READY</strong>
+        <span>流程通关</span>
+        <em>下一步：回到正式页面</em>
       </div>
 
       <div class="complete-notice">
