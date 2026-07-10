@@ -252,6 +252,163 @@
       grid-column: 1 / -1;
     }
 
+    .complete-page {
+      display: none;
+      flex: 1;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .complete-page.show {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .complete-hero {
+      text-align: center;
+    }
+    .complete-hero h2 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.16;
+      color: #071b48;
+      letter-spacing: 0;
+    }
+    .complete-hero p {
+      margin: 0 auto;
+      max-width: 520px;
+      color: #344054;
+      font-weight: 850;
+    }
+    .completion-badge {
+      position: relative;
+      width: min(260px, 78vw);
+      margin: 6px auto 0;
+      padding: 24px 18px;
+      border: 1px solid #b7d4ff;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 26% 22%, rgba(255,255,255,.94), rgba(255,255,255,0) 34%),
+        linear-gradient(135deg, #edf5ff, #dbeaff 46%, #fff6d8);
+      box-shadow: 0 18px 36px rgba(11, 92, 255, .18);
+      text-align: center;
+    }
+    .completion-badge strong {
+      display: block;
+      color: var(--blue-dark);
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: .02em;
+    }
+    .completion-badge span {
+      display: block;
+      margin-top: 8px;
+      color: #172033;
+      font-size: 20px;
+      font-weight: 950;
+    }
+    .complete-notice {
+      padding: 12px 13px;
+      border: 1px solid #f0d580;
+      border-radius: 15px;
+      background: var(--yellow);
+      color: #493200;
+      font-weight: 850;
+    }
+    .praise-card {
+      position: relative;
+      padding: 14px;
+      border: 1px solid #d7e5ff;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fbfdff, #f1f7ff);
+      overflow: hidden;
+    }
+    .praise-line {
+      min-height: 54px;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      border-radius: 15px;
+      background: #fff;
+      color: #0b2a66;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 950;
+      box-shadow: 0 8px 18px rgba(15,54,120,.08);
+    }
+    .praise-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      place-items: center;
+    }
+    .praise-button {
+      min-width: 180px;
+      min-height: 50px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, #0b5cff, #20a4ff);
+      font-weight: 950;
+      box-shadow: 0 12px 22px rgba(11,92,255,.24);
+      cursor: pointer;
+      transition: transform .12s ease;
+    }
+    .praise-button:active {
+      transform: scale(.96);
+    }
+    .praise-count {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 850;
+    }
+    .float-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .float-pop {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #0b2a66;
+      font-size: 16px;
+      font-weight: 950;
+      box-shadow: 0 8px 18px rgba(15,54,120,.14);
+      transform: translateX(-50%);
+      animation: floatPop 1.25s ease-out forwards;
+      white-space: nowrap;
+    }
+    @keyframes floatPop {
+      0% { opacity: 0; transform: translate(-50%, 0) scale(.9); }
+      18% { opacity: 1; }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--drift, 0px)), -76px) scale(1.04); }
+    }
+    .complete-actions {
+      display: grid;
+      gap: 9px;
+    }
+    .complete-actions .restart-link {
+      min-height: 46px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
     .lightbox,
     .modal {
       position: fixed;
@@ -316,6 +473,9 @@
       details, .audio-slot { grid-column: 1 / -1; }
       .controls { grid-template-columns: 1fr 1.5fr auto; }
       .restart { grid-column: auto; padding: 0 12px; }
+      .complete-page { padding: 24px; }
+      .complete-actions { grid-template-columns: 1.4fr 1fr auto; align-items: center; }
+      .complete-actions .restart-link { padding: 0 12px; }
     }
   </style>
 </head>
@@ -363,6 +523,37 @@
       <button class="btn primary" id="nextBtn" type="button">我已完成</button>
       <button class="restart" id="restartBtn" type="button">重新开始</button>
     </nav>
+
+    <section class="complete-page" id="completePage" aria-live="polite">
+      <div class="complete-hero">
+        <h2>任务已完成</h2>
+        <p>请回到正式问卷或任务页面继续提交，并保留好录屏材料。</p>
+      </div>
+
+      <div class="completion-badge" aria-label="任务完成进度百分之百">
+        <strong>100%</strong>
+        <span>任务完成</span>
+      </div>
+
+      <div class="complete-notice">
+        本页面仅用于操作引导，不代表问卷已提交成功。如你还没有提交正式问卷，请返回正式问卷或任务页面完成提交。
+      </div>
+
+      <section class="praise-card" aria-label="完成反馈">
+        <p class="praise-line" id="praiseLine">流程已确认，别忘了保留录屏</p>
+        <div class="praise-row">
+          <button class="praise-button" id="praiseBtn" type="button">夸夸老己</button>
+          <div class="praise-count" id="praiseCount">还没有夸夸</div>
+          <div class="float-layer" id="floatLayer" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <div class="complete-actions" aria-label="完成后操作">
+        <button class="btn primary" id="returnFormalBtn" type="button">回到正式问卷继续</button>
+        <button class="btn secondary" id="reviewStepsBtn" type="button">重新查看步骤</button>
+        <button class="restart-link" id="completeRestartBtn" type="button">重新开始</button>
+      </div>
+    </section>
   </main>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -383,6 +574,28 @@
 
   <script>
     const STORAGE_KEY = 'douyin-search-task-wizard-step';
+    const COMPLETE_KEY = 'douyin-search-task-wizard-complete';
+    const PRAISE_KEY = 'douyin-search-task-wizard-praise-count';
+    const FORMAL_TASK_URL = '';
+
+    const praiseLines = [
+      '爱你老己，流程已经捋顺了',
+      '老己辛苦了，接下来按步骤做就行',
+      '这波准备很到位',
+      '稳稳拿下，记得回到正式页面继续',
+      '今天的你，执行力在线',
+      '老己值得夸一下，任务流程已完成',
+      '可以，流程走得很丝滑',
+      '任务通关，接下来回到正式页面',
+      '看完流程，返工风险下降中',
+      '老己这波很稳',
+      '今日准备进度：已拿下',
+      '流程已确认，别忘了保留录屏',
+      '不愧是老己，稳得很',
+      '这波操作可以记一功',
+      '当前状态：稳稳完成'
+    ];
+    const floatWords = ['👍', '✨', '🎉', '💙', '🌟', '老己真稳', '执行力 +1', '流程拿下', '稳住了', '这波可以', '今日高光', '已夸夸', '返工风险 -1', '稳定发挥', '操作感拉满'];
 
     const steps = [
       {
@@ -474,8 +687,12 @@
 
     let current = Number(localStorage.getItem(STORAGE_KEY) || 0);
     if (!Number.isInteger(current) || current < 0 || current >= steps.length) current = 0;
+    let isComplete = localStorage.getItem(COMPLETE_KEY) === '1';
     let pendingNext = null;
 
+    const progressCard = document.querySelector('.progress-card');
+    const stage = document.getElementById('stage');
+    const controls = document.querySelector('.controls');
     const stepCounter = document.getElementById('stepCounter');
     const shortTitle = document.getElementById('shortTitle');
     const progressFill = document.getElementById('progressFill');
@@ -491,6 +708,14 @@
     const restartBtn = document.getElementById('restartBtn');
     const audioSlot = document.getElementById('audioSlot');
     const audioPlayer = document.getElementById('audioPlayer');
+    const completePage = document.getElementById('completePage');
+    const praiseLine = document.getElementById('praiseLine');
+    const praiseBtn = document.getElementById('praiseBtn');
+    const praiseCount = document.getElementById('praiseCount');
+    const floatLayer = document.getElementById('floatLayer');
+    const returnFormalBtn = document.getElementById('returnFormalBtn');
+    const reviewStepsBtn = document.getElementById('reviewStepsBtn');
+    const completeRestartBtn = document.getElementById('completeRestartBtn');
 
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
@@ -503,6 +728,16 @@
     const modalOk = document.getElementById('modalOk');
 
     function render() {
+      if (isComplete) {
+        renderComplete();
+        return;
+      }
+
+      progressCard.style.display = '';
+      stage.style.display = '';
+      controls.style.display = '';
+      completePage.classList.remove('show');
+
       const step = steps[current];
       localStorage.setItem(STORAGE_KEY, String(current));
 
@@ -544,20 +779,34 @@
       nextBtn.textContent = current === steps.length - 1 ? '完成任务' : '我已完成';
     }
 
+    function renderComplete() {
+      localStorage.setItem(COMPLETE_KEY, '1');
+      progressCard.style.display = 'none';
+      stage.style.display = 'none';
+      controls.style.display = 'none';
+      completePage.classList.add('show');
+      praiseLine.textContent = randomItem(praiseLines);
+      updatePraiseCount();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function goNext() {
       if (current < steps.length - 1) {
         current += 1;
         render();
       } else {
-        localStorage.removeItem(STORAGE_KEY);
-        showModal('任务完成', '请确认问卷已提交，并保存完整录屏。', null);
+        isComplete = true;
+        localStorage.setItem(STORAGE_KEY, String(steps.length - 1));
+        render();
       }
     }
 
-    function showModal(title, text, nextAction) {
+    function showModal(title, text, nextAction, okText = '确认完成', cancelText = '返回检查') {
       pendingNext = nextAction;
       modalTitle.textContent = title;
       modalText.textContent = text;
+      modalOk.textContent = okText;
+      modalCancel.textContent = cancelText;
       confirmModal.classList.add('show');
       confirmModal.setAttribute('aria-hidden', 'false');
     }
@@ -586,8 +835,56 @@
 
     restartBtn.addEventListener('click', () => {
       current = 0;
+      isComplete = false;
       localStorage.setItem(STORAGE_KEY, '0');
+      localStorage.removeItem(COMPLETE_KEY);
       render();
+    });
+
+    returnFormalBtn.addEventListener('click', () => {
+      if (FORMAL_TASK_URL) {
+        window.location.href = FORMAL_TASK_URL;
+        return;
+      }
+      showModal(
+        '请返回正式页面',
+        '当前未配置正式问卷链接，请切换回正式问卷或任务页面继续提交，并保留好录屏材料。',
+        null,
+        '知道了',
+        '关闭'
+      );
+    });
+
+    reviewStepsBtn.addEventListener('click', () => {
+      current = 0;
+      isComplete = false;
+      localStorage.setItem(STORAGE_KEY, '0');
+      localStorage.removeItem(COMPLETE_KEY);
+      render();
+    });
+
+    completeRestartBtn.addEventListener('click', () => {
+      showModal(
+        '重新开始确认',
+        '将回到第1步重新查看流程，夸夸次数会保留。',
+        () => {
+          current = 0;
+          isComplete = false;
+          localStorage.setItem(STORAGE_KEY, '0');
+          localStorage.removeItem(COMPLETE_KEY);
+          render();
+        },
+        '确认重新开始',
+        '先不重开'
+      );
+    });
+
+    praiseBtn.addEventListener('click', () => {
+      const nextCount = Number(localStorage.getItem(PRAISE_KEY) || 0) + 1;
+      localStorage.setItem(PRAISE_KEY, String(nextCount));
+      updatePraiseCount();
+      praiseLine.textContent = randomItem(praiseLines);
+      spawnFloat();
     });
 
     modalCancel.addEventListener('click', closeModal);
@@ -620,6 +917,33 @@
         closeModal();
       }
     });
+
+    function updatePraiseCount() {
+      const count = Number(localStorage.getItem(PRAISE_KEY) || 0);
+      praiseCount.textContent = count > 0 ? `已夸夸 ${count} 次` : '还没有夸夸';
+    }
+
+    function randomItem(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function spawnFloat() {
+      const active = floatLayer.querySelectorAll('.float-pop');
+      if (active.length >= 12) active[0].remove();
+
+      const total = Math.random() > .72 ? 2 : 1;
+      for (let i = 0; i < total; i += 1) {
+        if (floatLayer.querySelectorAll('.float-pop').length >= 12) break;
+        const item = document.createElement('span');
+        item.className = 'float-pop';
+        item.textContent = randomItem(floatWords);
+        item.style.setProperty('--drift', `${Math.round(Math.random() * 72 - 36)}px`);
+        item.style.left = `${48 + Math.random() * 10 - 5}%`;
+        item.style.bottom = `${20 + i * 10}px`;
+        floatLayer.appendChild(item);
+        item.addEventListener('animationend', () => item.remove(), { once: true });
+      }
+    }
 
     render();
   </script>
